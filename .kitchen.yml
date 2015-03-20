@@ -1,0 +1,33 @@
+---
+driver:
+  name: ec2
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id:
+  ssh_key:
+  security_group_ids:
+  region: us-east-1
+  availability_zone: us-east-1a
+  require_chef_omnibus: true
+  no-host-key-verify: true
+  subnet_id:
+  image_id: ami-146e2a7c
+  username: ec2-user
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: amazon
+
+suites:
+  - name: tpcc
+    driver:
+      flavor_id: c4.large
+    run_list:
+      - recipe[mysql-bench::tpcc_install]
+      - recipe[mysql-bench::tpcc_initialize]
+    attributes:
+      mysql_host:
+      mysql_user:
+      mysql_pass:
